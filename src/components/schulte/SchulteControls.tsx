@@ -6,17 +6,17 @@ interface SchulteControlsProps {
    isGameStarted: boolean;
    size: number;
    setSize: Dispatch<SetStateAction<number>>;
-   start?: () => void;
+   start: () => void;
    reset?: () => void;
 }
 
-const SchulteControls: FC<SchulteControlsProps> = ({ isGameStarted, size, setSize }) => {
+const SchulteControls: FC<SchulteControlsProps> = ({ isGameStarted, size, setSize, start }) => {
    return (
       <div className={styles.controls}>
          {isGameStarted ? (
             <Button variant="danger">Reset</Button>
          ) : (
-            <Button variant="success">Start</Button>
+            <Button variant="success" onClick={start}>Start</Button>
          )}
       </div>
    );

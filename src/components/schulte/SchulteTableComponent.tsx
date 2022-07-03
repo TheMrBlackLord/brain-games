@@ -2,6 +2,7 @@ import React, { useState, useMemo, Fragment } from 'react';
 import { SchulteTable } from '../../models/schulte/SchulteTable';
 import SchulteControls from './SchulteControls';
 import Square from './Square';
+import Stopwatch from './Stopwatch';
 import styles from './styles/SchulteTableComponent.module.scss';
 
 const squareStyleSize = 50;
@@ -23,7 +24,12 @@ const SchulteTableComponent = () => {
             isGameStarted={isGameStarted}
             size={tableSize}
             setSize={setTableSize}
+            start={() => setIsGameStarted(true)}
          />
+         <div className={styles.info}>
+            <p>Time: <strong><Stopwatch isRunning={isGameStarted}/></strong></p>
+            <p>Number: <strong>{table.necessaryNumber}</strong></p>
+         </div>
          <div
             className={styles.table}
             style={{ width: tableStyleSize, height: tableStyleSize }}
