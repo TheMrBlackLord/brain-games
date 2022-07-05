@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 export class SchulteTable {
-   squares: number[][] = [];
+   cells: number[][] = [];
 
    constructor (size: number) {
       this.createTable(size);
@@ -9,10 +9,10 @@ export class SchulteTable {
 
    private createTable(size: number) {
       const numbers = _.shuffle(_.range(1, size * size + 1));
-      this.squares = _.chunk(numbers, size);
+      this.cells = _.chunk(numbers, size);
    }
-   getSquare(y: number, x: number) {
-      return this.squares[y][x];
+   getCell(y: number, x: number) {
+      return this.cells[y][x];
    }
    reset(size: number) {
       this.createTable(size);

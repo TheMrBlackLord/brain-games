@@ -1,10 +1,10 @@
 import React, { FC, CSSProperties, useMemo, useState } from 'react';
 import { useSelector } from "react-redux";
 import { RootState } from '../../store';
-import styles from './styles/Square.module.scss';
+import styles from './styles/Cell.module.scss';
 import { sample } from 'lodash'
 
-interface SquareProps {
+interface CellProps {
    value: number;
    style?: CSSProperties;
    click: () => boolean;
@@ -19,7 +19,7 @@ const colors: string[] = [
    "orange"
 ];
 
-const Square: FC<SquareProps> = ({ value, style, click }) => {
+const Cell: FC<CellProps> = ({ value, style, click }) => {
    const isGameStarted = useSelector((state: RootState) => state.schulte.isGameStarted);
    const [hidden, setHidden] = useState(!isGameStarted);
 
@@ -38,7 +38,7 @@ const Square: FC<SquareProps> = ({ value, style, click }) => {
 
    return (
       <div
-         className={styles.square}
+         className={styles.cell}
          style={{ ...style, color }}
          onClick={onClick}
       >
@@ -47,4 +47,4 @@ const Square: FC<SquareProps> = ({ value, style, click }) => {
    );
 };
 
-export default Square;
+export default Cell;

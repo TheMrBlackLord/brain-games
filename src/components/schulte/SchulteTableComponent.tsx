@@ -4,11 +4,11 @@ import { setIsGameStarted } from '../../store/slices/SchulteSlice';
 import { RootState, AppDispatch } from '../../store';
 import { SchulteTable } from '../../models/schulte/SchulteTable';
 import SchulteControls from './SchulteControls';
-import Square from './Square';
+import Cell from './Cell';
 import Stopwatch from './Stopwatch';
 import styles from './styles/SchulteTableComponent.module.scss';
 
-const squareStyleSize = 50;
+const cellStyleSize = 50;
 
 const SchulteTableComponent = () => {
    const dispatch = useDispatch<AppDispatch>();
@@ -20,7 +20,7 @@ const SchulteTableComponent = () => {
    const tableStyleSize = useMemo(() => {
       const borders = 2;
       const margins = 2;
-      return (squareStyleSize + margins) * tableSize + borders;
+      return (cellStyleSize + margins) * tableSize + borders;
    }, [tableSize]);
 
    const startGame = () => {
@@ -36,8 +36,8 @@ const SchulteTableComponent = () => {
       console.log('victory');
    }
    const click = (row: number, col: number) => {
-      const square = table.getSquare(row, col);
-      const isCorrect = square === necessaryNumber;
+      const cell = table.getCell(row, col);
+      const isCorrect = cell === necessaryNumber;
       if (isCorrect) {
          if (necessaryNumber === tableSize ** 2) {
             victory();
@@ -62,17 +62,17 @@ const SchulteTableComponent = () => {
             className={styles.table}
             style={{ width: tableStyleSize, height: tableStyleSize }}
          >
-            {table.squares.map((row, y) => (
+            {table.cells.map((row, y) => (
                <Fragment key={row.join("")}>
-                  {row.map((square, x) => (
-                     <Square
-                        key={square}
+                  {row.map((cell, x) => (
+                     <Cell
+                        key={cell}
                         style={{
-                           width: squareStyleSize,
-                           height: squareStyleSize,
+                           width: cellStyleSize,
+                           height: cellStyleSize,
                         }}
                         click={() => click(y, x)}
-                        value={square}
+                        value={cell}
                      />
                   ))}
                </Fragment>
