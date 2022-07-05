@@ -15,6 +15,7 @@ const Stopwatch: FC<StopwatchProps> = ({ isRunning }) => {
          }, 1000);
       } else {
          clearInterval(interval);
+         setTime(0);
       }
 
       return () => clearInterval(interval);
