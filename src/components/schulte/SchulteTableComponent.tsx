@@ -1,30 +1,37 @@
 import React, { useState, useMemo, Fragment } from 'react';
-import { useSelector, useDispatch } from "react-redux";
 import { setIsGameStarted } from '../../store/slices/SchulteSlice';
-import { RootState, AppDispatch } from '../../store';
+import useGameStore from './hooks/useGameStore';
 import { SchulteTable } from '../../models/schulte/SchulteTable';
 import SchulteControls from './SchulteControls';
-import Cell from './Cell';
+import CellComponent from './CellComponent';
 import Stopwatch from './Stopwatch';
 import styles from './styles/SchulteTableComponent.module.scss';
 
-const cellStyleSize = 50;
-
 const SchulteTableComponent = () => {
-   const dispatch = useDispatch<AppDispatch>();
-   const tableSize = useSelector((state: RootState) => state.schulte.tableSize);
-   const isGameStarted = useSelector((state: RootState) => state.schulte.isGameStarted);
-   const [necessaryNumber, setNecessaryNumber] = useState(1);
-   const [table] = useState(new SchulteTable(tableSize));
+   const {
+      dispatch,
+      tableSize,
+      isGameStarted,
+      cellStyleSize,
+      cellFontSize,
+   } = useGameStore();
+   const [necessaryNumber, setNecessaryNumber] = useState<number>(1);
+   const [table] = useState<SchulteTable>(new SchulteTable(tableSize));
 
    const tableStyleSize = useMemo(() => {
-      const borders = 2;
-      const margins = 2;
+      const borders = 2; // border: 1px for each side
+      const margins = 2; // margin 1px 
       return (cellStyleSize + margins) * tableSize + borders;
-   }, [tableSize]);
+   }, [tableSize, cellStyleSize]);
+
+   const cells = useMemo(() => {
+      table.reset(tableSize);
+      return table.cells;
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [tableSize, table, isGameStarted]);
 
    const startGame = () => {
-      table.reset(tableSize);
+      // table.reset(tableSize);
       dispatch(setIsGameStarted(true));
    }
    const stopGame = () => {
@@ -36,7 +43,7 @@ const SchulteTableComponent = () => {
       console.log('victory');
    }
    const click = (row: number, col: number) => {
-      const cell = table.getCell(row, col);
+      const cell = table.getCellValue(row, col);
       const isCorrect = cell === necessaryNumber;
       if (isCorrect) {
          if (necessaryNumber === tableSize ** 2) {
@@ -50,29 +57,35 @@ const SchulteTableComponent = () => {
 
    return (
       <div>
-         <SchulteControls
-            start={startGame}
-            stop={stopGame}
-         />
+         <SchulteControls start={startGame} stop={stopGame} />
          <div className={styles.info}>
-            <p>Time: <strong><Stopwatch isRunning={isGameStarted}/></strong></p>
-            <p>Number: <strong>{isGameStarted ? necessaryNumber : '-'}</strong></p>
+            <p>
+               Time:&nbsp;
+               <strong>
+                  <Stopwatch isRunning={isGameStarted} />
+               </strong>
+            </p>
+            <p>
+               Number:&nbsp;
+               <strong>{isGameStarted ? necessaryNumber : "-"}</strong>
+            </p>
          </div>
          <div
             className={styles.table}
             style={{ width: tableStyleSize, height: tableStyleSize }}
          >
-            {table.cells.map((row, y) => (
-               <Fragment key={row.join("")}>
+            {cells.map((row, y) => (
+               <Fragment key={row[y].ids[0]}>
                   {row.map((cell, x) => (
-                     <Cell
-                        key={cell}
+                     <CellComponent
+                        key={cell.ids[1]}
                         style={{
                            width: cellStyleSize,
                            height: cellStyleSize,
+                           fontSize: cellFontSize,
                         }}
                         click={() => click(y, x)}
-                        value={cell}
+                        value={table.getCellValue(y, x)}
                      />
                   ))}
                </Fragment>

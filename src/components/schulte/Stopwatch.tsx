@@ -5,7 +5,7 @@ interface StopwatchProps {
 }
 
 const Stopwatch: FC<StopwatchProps> = ({ isRunning }) => {
-   const [time, setTime] = useState(0);
+   const [time, setTime] = useState<number>(0);
 
    useEffect(() => {
       let interval!: NodeJS.Timer;

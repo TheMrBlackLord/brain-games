@@ -4,29 +4,29 @@ import { RootState } from '../../store';
 import styles from './styles/Cell.module.scss';
 import { sample } from 'lodash'
 
-interface CellProps {
+interface CellComponentProps {
    value: number;
    style?: CSSProperties;
    click: () => boolean;
 }
 
 const colors: string[] = [
-   "green",
-   "red",
-   "black",
-   "blue",
-   "magenta",
-   "orange"
+   "#F0C02D",
+   "#F5F5F5",
+   "#94D24A",
+   "#BD80F6",
+   "#E1526E",
+   "#6898CB",
 ];
 
-const Cell: FC<CellProps> = ({ value, style, click }) => {
+const CellComponent: FC<CellComponentProps> = ({ value, style, click }) => {
    const isGameStarted = useSelector((state: RootState) => state.schulte.isGameStarted);
-   const [hidden, setHidden] = useState(!isGameStarted);
+   const [hidden, setHidden] = useState<boolean>(!isGameStarted);
 
-   const color = useMemo(() => {
+   const backgroundColor = useMemo(() => {
       return sample(colors);
    }, []);
-
+   
    const onClick = () => {
       if (isGameStarted) {
          const result = click();
@@ -39,7 +39,11 @@ const Cell: FC<CellProps> = ({ value, style, click }) => {
    return (
       <div
          className={styles.cell}
-         style={{ ...style, color }}
+         style={{ 
+            ...style,
+            backgroundColor:
+               hidden || !isGameStarted ? "transparent" : backgroundColor,
+         }}
          onClick={onClick}
       >
          {hidden || !isGameStarted ? "" : value}
@@ -47,4 +51,4 @@ const Cell: FC<CellProps> = ({ value, style, click }) => {
    );
 };
 
-export default Cell;
+export default CellComponent;

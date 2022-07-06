@@ -1,8 +1,12 @@
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC, Fragment } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { setTableSize } from '../../store/slices/SchulteSlice';
+import {
+   setTableSize,
+   setCellStyleSize,
+   setCellFontSize,
+} from "../../store/slices/SchulteSlice";
 import { RootState, AppDispatch } from '../../store';
-import { Button } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import styles from './styles/SchulteControls.module.scss'
 
 interface SchulteControlsProps {
@@ -13,14 +17,50 @@ interface SchulteControlsProps {
 const SchulteControls: FC<SchulteControlsProps> = ({ start, stop }) => {
    const dispatch = useDispatch<AppDispatch>();
    const isGameStarted = useSelector((state: RootState) => state.schulte.isGameStarted);
+   const tableSize = useSelector((state: RootState) => state.schulte.tableSize);
+   const cellStyleSize = useSelector((state: RootState) => state.schulte.cellStyleSize);
+
+   const cellStyleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      dispatch(setCellStyleSize(+e.target.value));
+      dispatch(setCellFontSize(+e.target.value));
+   }
+   const changeSize = (e: ChangeEvent<HTMLInputElement>) => {
+      const value = +e.target.value;
+      if (value >= 5 && value <= 10) {
+         dispatch(setTableSize(value));
+      }
+   }
 
    return (
       <div className={styles.controls}>
          {isGameStarted ? (
-            <Button variant="danger" onClick={stop}>Stop</Button>
+            <Button variant="danger" onClick={stop}>
+               Stop
+            </Button>
          ) : (
-            <Button variant="success" onClick={start}>Start</Button>
+            <Fragment>
+               <div className={styles.startButtons}>
+                  <Button variant="success" onClick={start}>
+                     Start
+                  </Button>
+                  <Form.Label className="my-0">Size:</Form.Label>
+                  <Form.Control
+                     type="number"
+                     value={tableSize}
+                     onChange={changeSize}
+                     min="5"
+                     max="10"
+                  ></Form.Control>
+               </div>
+            </Fragment>
          )}
+         <Form.Range
+            title={`${cellStyleSize}`}
+            value={cellStyleSize}
+            onChange={cellStyleHandler}
+            min={40}
+            max={100}
+         />
       </div>
    );
 };

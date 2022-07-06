@@ -1,20 +1,22 @@
 import _ from 'lodash';
+import { Cell } from './Cell';
 
 export class SchulteTable {
-   cells: number[][] = [];
+   cells: Cell[][] = [];
 
    constructor (size: number) {
       this.createTable(size);
    }
 
-   private createTable(size: number) {
+   private createTable(size: number): void {
       const numbers = _.shuffle(_.range(1, size * size + 1));
-      this.cells = _.chunk(numbers, size);
+      const cells = _.map(numbers, number => new Cell(number));
+      this.cells = _.chunk(cells, size);
    }
-   getCell(y: number, x: number) {
-      return this.cells[y][x];
+   getCellValue(y: number, x: number): number {
+      return this.cells[y][x].cell;
    }
-   reset(size: number) {
+   reset(size: number): void {
       this.createTable(size);
    }
 }
