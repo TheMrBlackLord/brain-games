@@ -7,6 +7,7 @@ const useGameStore = () => {
    const isGameStarted = useSelector((state: RootState) => state.schulte.isGameStarted);
    const cellStyleSize = useSelector((state: RootState) => state.schulte.cellStyleSize);
    const cellFontSize = useSelector((state: RootState) => state.schulte.cellFontSize);
+   const elapsedTime = useSelector((state: RootState) => state.schulte.elapsedTime);
 
    return {
       dispatch,
@@ -14,7 +15,8 @@ const useGameStore = () => {
       isGameStarted,
       cellStyleSize,
       cellFontSize,
-   }
+      elapsedTime,
+   };
 }
 
 export default useGameStore;

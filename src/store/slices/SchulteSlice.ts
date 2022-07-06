@@ -9,6 +9,7 @@ export const schulteSlice = createSlice({
       isGameStarted: false,
       cellStyleSize: 50,
       cellFontSize: 20,
+      elapsedTime: 0,
    },
    reducers: {
       setTableSize(state, action: PayloadAction<number>) {
@@ -23,6 +24,9 @@ export const schulteSlice = createSlice({
       setCellFontSize(state, action: PayloadAction<number>) {
          state.cellFontSize = Math.floor(action.payload * fontRatio);
       },
+      setElapsedTime(state, action: PayloadAction<number>) {
+         state.elapsedTime = action.payload;
+      }
    },
 });
 
@@ -30,7 +34,8 @@ export const {
    setTableSize,
    setIsGameStarted,
    setCellStyleSize,
-   setCellFontSize
+   setCellFontSize,
+   setElapsedTime,
 } = schulteSlice.actions;
 
 export default schulteSlice.reducer
