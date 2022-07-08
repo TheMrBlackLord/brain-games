@@ -1,12 +1,11 @@
-import React, { FC, CSSProperties, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState, useEffect } from 'react';
+import { sample } from 'lodash'
 import { useSelector } from "react-redux";
 import { RootState } from '../../store';
 import styles from './styles/Cell.module.scss';
-import { sample } from 'lodash'
 
 interface CellComponentProps {
    value: number;
-   style?: CSSProperties;
    click: () => boolean;
 }
 
@@ -19,34 +18,41 @@ const colors: string[] = [
    "#6898CB",
 ];
 
-const CellComponent: FC<CellComponentProps> = ({ value, style, click }) => {
+const CellComponent: FC<CellComponentProps> = ({ value, click }) => {
    const isGameStarted = useSelector((state: RootState) => state.schulte.isGameStarted);
+   const cellStyleSize = useSelector((state: RootState) => state.schulte.cellStyleSize);
+   const cellFontSize = useSelector((state: RootState) => state.schulte.cellFontSize);
    const [hidden, setHidden] = useState<boolean>(!isGameStarted);
 
    const backgroundColor = useMemo(() => {
       return sample(colors);
    }, []);
-   
+
+   useEffect(() => {
+      if (isGameStarted) {
+         setHidden(false);
+      }
+   }, [isGameStarted]);
+
    const onClick = () => {
       if (isGameStarted) {
-         const result = click();
-         if (result) {
-            setHidden(true);
-         }
+         setHidden(click());
       }
    };
 
    return (
       <div
          className={styles.cell}
-         style={{ 
-            ...style,
+         style={{
+            width: cellStyleSize,
+            height: cellStyleSize,
+            fontSize: cellFontSize,
             backgroundColor:
-               hidden || !isGameStarted ? "transparent" : backgroundColor,
+               hidden ? "transparent" : backgroundColor,
          }}
          onClick={onClick}
       >
-         {hidden || !isGameStarted ? "" : value}
+         {hidden ? "" : value}
       </div>
    );
 };

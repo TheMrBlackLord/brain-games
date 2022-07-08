@@ -5,8 +5,8 @@ import { SchulteTable } from '../../models/schulte/SchulteTable';
 import SchulteControls from './SchulteControls';
 import CellComponent from './CellComponent';
 import Stopwatch from './Stopwatch';
-import styles from './styles/SchulteTableComponent.module.scss';
 import FinishPanel from './FinishPanel';
+import styles from './styles/SchulteTableComponent.module.scss';
 
 const SchulteTableComponent = () => {
    const {
@@ -14,7 +14,6 @@ const SchulteTableComponent = () => {
       tableSize,
       isGameStarted,
       cellStyleSize,
-      cellFontSize,
       elapsedTime,
    } = useGameStore();
    const [necessaryNumber, setNecessaryNumber] = useState<number>(1);
@@ -84,15 +83,10 @@ const SchulteTableComponent = () => {
                time={elapsedTime}
             />
             {cells.map((row, y) => (
-               <Fragment key={row[y].ids[0]}>
+               <Fragment key={row[y].id}>
                   {row.map((cell, x) => (
                      <CellComponent
-                        key={cell.ids[1]}
-                        style={{
-                           width: cellStyleSize,
-                           height: cellStyleSize,
-                           fontSize: cellFontSize,
-                        }}
+                        key={cell.id}
                         click={() => click(y, x)}
                         value={table.getCellValue(y, x)}
                      />
