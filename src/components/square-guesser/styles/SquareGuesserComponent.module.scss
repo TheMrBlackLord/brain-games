@@ -1,0 +1,20 @@
+.field {
+   position: relative;
+   border: 1px solid #ccc;
+   display: flex;
+   flex-wrap: wrap;
+   width: 308px;
+   height: 308px;
+}
+.info {
+   text-align: center;
+}
+
+.enterActive {
+   transition: background-color 500ms;
+   background-color: #eb1212b7;
+}
+.exitActive {
+   transition: background-color 500ms;
+   background-color: #fff;
+}
