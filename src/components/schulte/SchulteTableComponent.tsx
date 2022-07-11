@@ -1,21 +1,21 @@
 import React, { useState, useMemo, Fragment } from 'react';
 import { setIsGameStarted, setElapsedTime } from '../../store/slices/SchulteSlice';
-import useGameStore from './hooks/useGameStore';
 import { SchulteTable } from '../../models/schulte/SchulteTable';
 import SchulteControls from './SchulteControls';
 import CellComponent from './CellComponent';
 import Stopwatch from './Stopwatch';
 import FinishPanel from './FinishPanel';
 import styles from './styles/SchulteTableComponent.module.scss';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const SchulteTableComponent = () => {
+   const dispatch = useAppDispatch();
    const {
-      dispatch,
       tableSize,
       isGameStarted,
       cellStyleSize,
       elapsedTime,
-   } = useGameStore();
+   } = useAppSelector((state) => state.schulte);
    const [necessaryNumber, setNecessaryNumber] = useState<number>(1);
    const [table] = useState<SchulteTable>(new SchulteTable(tableSize));
    const [isFinish, setIsFinish] = useState<boolean>(false);
