@@ -1,6 +1,5 @@
 import React, { FC, useMemo, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setElapsedTime } from '../../store/slices/SchulteSlice';
 
 interface StopwatchProps {
@@ -8,8 +7,8 @@ interface StopwatchProps {
 }
 
 const Stopwatch: FC<StopwatchProps> = ({ isRunning }) => {
-   const dispatch = useDispatch<AppDispatch>();
-   const elapsedTime = useSelector((state: RootState) => state.schulte.elapsedTime);
+   const dispatch = useAppDispatch();
+   const elapsedTime = useAppSelector((state) => state.schulte.elapsedTime);
 
    useEffect(() => {
       let interval!: NodeJS.Timer;

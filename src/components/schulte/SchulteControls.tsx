@@ -1,13 +1,12 @@
 import React, { ChangeEvent, FC, Fragment } from 'react';
-import { useSelector, useDispatch } from "react-redux";
 import {
    setTableSize,
    setCellStyleSize,
    setCellFontSize,
 } from "../../store/slices/SchulteSlice";
-import { RootState, AppDispatch } from '../../store';
 import { Button, Form } from 'react-bootstrap';
 import styles from './styles/SchulteControls.module.scss'
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 interface SchulteControlsProps {
    start: () => void;
@@ -15,10 +14,10 @@ interface SchulteControlsProps {
 }
 
 const SchulteControls: FC<SchulteControlsProps> = ({ start, stop }) => {
-   const dispatch = useDispatch<AppDispatch>();
-   const isGameStarted = useSelector((state: RootState) => state.schulte.isGameStarted);
-   const tableSize = useSelector((state: RootState) => state.schulte.tableSize);
-   const cellStyleSize = useSelector((state: RootState) => state.schulte.cellStyleSize);
+   const dispatch = useAppDispatch();
+   const { isGameStarted, tableSize, cellStyleSize } = useAppSelector(
+      (state) => state.schulte
+   );
 
    const cellStyleHandler = (e: ChangeEvent<HTMLInputElement>) => {
       dispatch(setCellStyleSize(+e.target.value));

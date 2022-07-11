@@ -1,8 +1,7 @@
 import React, { FC, useMemo, useState, useEffect } from 'react';
 import { sample } from 'lodash'
-import { useSelector } from "react-redux";
-import { RootState } from '../../store';
 import styles from './styles/Cell.module.scss';
+import { useAppSelector } from '../../hooks';
 
 interface CellComponentProps {
    value: number;
@@ -19,9 +18,9 @@ const colors: string[] = [
 ];
 
 const CellComponent: FC<CellComponentProps> = ({ value, click }) => {
-   const isGameStarted = useSelector((state: RootState) => state.schulte.isGameStarted);
-   const cellStyleSize = useSelector((state: RootState) => state.schulte.cellStyleSize);
-   const cellFontSize = useSelector((state: RootState) => state.schulte.cellFontSize);
+   const { isGameStarted, cellStyleSize, cellFontSize } = useAppSelector(
+      (state) => state.schulte
+   );
    const [hidden, setHidden] = useState<boolean>(!isGameStarted);
 
    const backgroundColor = useMemo(() => {

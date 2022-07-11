@@ -1,14 +1,13 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
 import { SquareGuesser } from '../../models/square-guesser/SquareGuesser';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { AppDispatch, RootState } from '../../store';
 import { setIsGameStarted } from '../../store/slices/SquareGuesserSlice';
 import { Square } from '../../models/square-guesser/Square';
 import DefeatPanel from './DefeatPanel';
 import SquareComponent from './SquareComponent';
 import SquareGuesserControls from './SquareGuesserControls';
 import styles from './styles/SquareGuesserComponent.module.scss'
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const squareGuesser = new SquareGuesser();
 const animationDuration = 500;
@@ -26,8 +25,8 @@ const defaultAnimation: { [key: number]: boolean } = {
 };
 
 const SquareGuesserComponent = () => {
-   const dispatch = useDispatch<AppDispatch>();
-   const isGameStarted = useSelector((state: RootState) => state.squareGuesser.isGameStarted);
+   const dispatch = useAppDispatch();
+   const isGameStarted = useAppSelector((state) => state.squareGuesser.isGameStarted);
    const [level, setLevel] = useState<number>(squareGuesser.level);
    const [sequence, setSequence] = useState<Square[]>(squareGuesser.sequence);
    const [isAnimating, setIsAnimating] = useState<boolean>(false);
@@ -62,7 +61,7 @@ const SquareGuesserComponent = () => {
       setTimeout(() => {
          setIsAnimating(false);
       }, (animationDuration + delayUntilNext) * sequence.length);
-      
+
       sequence.forEach((square, i) => {
          setTimeout(() => {
             setAnimationIsOn((prev) => ({ ...prev, [square.id]: true }));

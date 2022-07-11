@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Button } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { useAppSelector } from '../../hooks';
 
 interface SquareGuesserControlsProps { 
    start: () => void;
@@ -9,8 +8,7 @@ interface SquareGuesserControlsProps {
 }
 
 const SquareGuesserControls: FC<SquareGuesserControlsProps> = ({ start, stop }) => {
-   const isGameStarted = useSelector((state: RootState) => state.squareGuesser.isGameStarted);
-
+   const isGameStarted = useAppSelector((state) => state.squareGuesser.isGameStarted);
 
    return (
       <div>
