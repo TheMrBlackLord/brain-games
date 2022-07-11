@@ -34,8 +34,8 @@ export class SquareGuesser {
       this.index = 0;
       this.sequence = _.shuffle(sequence);
    }
-   check(id: number): { isCorrect: boolean, isLast: boolean } { 
-      const isCorrect = this.sequence[this.index].id === id;
+   check(id: number): { isCorrect: boolean, isLast: boolean } {
+      const isCorrect = this.sequence[this.index]?.id === id;
       if (isCorrect) {
          this.index++;
       }
