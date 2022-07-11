@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SquareGuesser } from '../../models/square-guesser/SquareGuesser';
 import { AppDispatch, RootState } from '../../store';
 import { setIsGameStarted } from '../../store/slices/SquareGuesserSlice';
+import DefeatPanel from './DefeatPanel';
 import SquareComponent from './SquareComponent';
 import SquareGuesserControls from './SquareGuesserControls';
 import styles from './styles/SquareGuesserComponent.module.scss'
@@ -25,16 +26,19 @@ const SquareGuesserComponent = () => {
    const dispatch = useDispatch<AppDispatch>();
    const isGameStarted = useSelector((state: RootState) => state.squareGuesser.isGameStarted);
    const [level, setLevel] = useState<number>(squareGuesser.level);
+   const [defeatPanelVisible, setDefeatPanelVisible] = useState<boolean>(false);
    // const [animationIsOn, setAnimationIsOn] = useState<typeof defaultAnimation>(defaultAnimation);
 
    const startGame = () => {
       dispatch(setIsGameStarted(true));
       newSequence();
+      setDefeatPanelVisible(false);
+      setLevel(squareGuesser.level);
    };
    const stopGame = () => {
       dispatch(setIsGameStarted(false));
       squareGuesser.reset();
-      setLevel(squareGuesser.level);
+      setDefeatPanelVisible(true);
    };
    const clickHandler = (id: number) => {
       if (isGameStarted) {
@@ -44,7 +48,6 @@ const SquareGuesserComponent = () => {
          }
          if (!isCorrect) {
             stopGame();
-            console.log('lose')
          }
       }
    };
@@ -68,6 +71,7 @@ const SquareGuesserComponent = () => {
             </p>
          </div>
          <div className={styles.field}>
+            <DefeatPanel show={defeatPanelVisible} level={level} start={startGame}/>
             {squareGuesser.field.map((row, y) => (
                <Fragment key={row[y].id}>
                   {row.map((square) => (
